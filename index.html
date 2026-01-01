@@ -569,7 +569,7 @@
             // Responsive dimensions
             const isMobile = window.innerWidth <= 768;
             const margin = isMobile 
-                ? { top: 40, right: 60, bottom: 70, left: 80 }
+                ? { top: 40, right: 60, bottom: 70, left: 85 }
                 : { top: 60, right: 120, bottom: 80, left: 120 };
             const width = isMobile ? Math.min(window.innerWidth - 40, 600) : 1000;
             const height = isMobile ? 400 : 600;
@@ -709,7 +709,7 @@
             // Y-axis ticks
             yTicks.forEach(tick => {
                 svg += `<line x1="-6" y1="${yScale(tick)}" x2="0" y2="${yScale(tick)}" stroke="#4a5568" stroke-width="2"/>`;
-                svg += `<text x="-12" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
+                svg += `<text x="-8" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
             });
 
             // Data points - only for filtered data
@@ -722,8 +722,9 @@
             });
 
             // Axis labels
+            const yLabelOffset = isMobile ? -50 : -60;
             svg += `<text x="${plotWidth / 2}" y="${plotHeight + 55}" text-anchor="middle" font-size="${axisLabelSize}" font-weight="600" fill="#2d3748" letter-spacing="0.5px">Revenue (in PKR trillions)</text>`;
-            svg += `<text x="-${plotHeight / 2}" y="-80" text-anchor="middle" font-size="${axisLabelSize}" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90)">Net Income (in PKR billions)</text>`;
+            svg += `<text x="-${plotHeight / 2}" y="${yLabelOffset}" text-anchor="middle" font-size="${axisLabelSize}" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90)">Net Income (in PKR billions)</text>`;
 
             svg += `</g></svg>`;
 
