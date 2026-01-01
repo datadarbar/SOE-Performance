@@ -569,7 +569,7 @@
             // Responsive dimensions
             const isMobile = window.innerWidth <= 768;
             const margin = isMobile 
-                ? { top: 40, right: 60, bottom: 60, left: 80 }
+                ? { top: 40, right: 60, bottom: 70, left: 80 }
                 : { top: 60, right: 120, bottom: 80, left: 120 };
             const width = isMobile ? Math.min(window.innerWidth - 40, 600) : 1000;
             const height = isMobile ? 400 : 600;
@@ -730,7 +730,7 @@
             document.getElementById('chartContainer').innerHTML = svg;
 
             // Update data summary
-            document.getElementById('dataSummary').innerHTML = `<strong>Data Summary:</strong> ${filteredData.length} of ${data.length} companies displayed | Max Revenue: ${Math.max(...data.map(d => d.revenue)).toLocaleString()} | Max Profit: ${Math.max(...data.map(d => d.profit)).toLocaleString()} | Min Profit: ${Math.min(...data.map(d => d.profit)).toLocaleString()}`;
+            document.getElementById('dataSummary').innerHTML = `<strong>Data Summary:</strong> ${filteredData.length} of ${data.length} companies displayed | Max Revenue: ${Math.max(...data.map(d => d.revenue)).toLocaleString()} | Max Net Income: ${Math.max(...data.map(d => d.profit)).toLocaleString()} | Min Net Income: ${Math.min(...data.map(d => d.profit)).toLocaleString()}`;
         }
 
         function showTooltip(index) {
