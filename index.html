@@ -1,613 +1,565 @@
-import React, { useState } from 'react';
-
-const BubbleChart = () => {
-  const [showPipeline, setShowPipeline] = useState(true);
-  const [showNonPipeline, setShowNonPipeline] = useState(true);
-  const [hoveredPoint, setHoveredPoint] = useState(null);
-
-  const data = [
-    { company: "National Bank of Pakistan", profit: 27494, assets: 7110447, revenue: 206749, status: "Non-Pipeline" },
-    { company: "State Life Insurance Corporation", profit: 18370, assets: 2112588, revenue: 522883, status: "Pipeline" },
-    { company: "Pak Kuwait Investment Company", profit: 15246, assets: 1062169, revenue: 24684, status: "Non-Pipeline" },
-    { company: "National Insurance Company Limited", profit: 10002, assets: 138763, revenue: 24059, status: "Pipeline" },
-    { company: "Zarai Taraqiati Bank Limited", profit: 8409, assets: 694530, revenue: 23247, status: "Pipeline" },
-    { company: "Pak China Investment Company Limited", profit: 2312, assets: 73426, revenue: 4773, status: "Non-Pipeline" },
-    { company: "Pakistan Reinsurance Company Limited", profit: 2270, assets: 73344, revenue: 10172, status: "Pipeline" },
-    { company: "House Building Finance Company Limited", profit: 2238, assets: 60237, revenue: 5195, status: "Pipeline" },
-    { company: "Exim Bank of Pakistan Limited", profit: 2231, assets: 22269, revenue: 2664, status: "Non-Pipeline" },
-    { company: "National Investment Trust Limited", profit: 1166, assets: 16343, revenue: 3153, status: "Non-Pipeline" },
-    { company: "Pak Iran Investment Company", profit: 733, assets: 38568, revenue: 1810, status: "Non-Pipeline" },
-    { company: "Pak Brunei Investment Company", profit: 591, assets: 226538, revenue: 1622, status: "Non-Pipeline" },
-    { company: "Saudi Pak Industrial and Agricultural Investment Company Limited", profit: 552, assets: 71680, revenue: 1400, status: "Non-Pipeline" },
-    { company: "Postal Life Insurance Company Limited", profit: 498, assets: 85253, revenue: 9646, status: "Non-Pipeline" },
-    { company: "First Women Bank Limited", profit: 410, assets: 57503, revenue: 2085, status: "Pipeline" },
-    { company: "Pak Oman Investment Company", profit: 61, assets: 413928, revenue: 1038, status: "Non-Pipeline" },
-    { company: "Pak Libya Holding Company", profit: -544, assets: 511477, revenue: 417, status: "Non-Pipeline" },
-    { company: "Oil and Gas Development Company Limited", profit: 208976, assets: 1604254, revenue: 463698, status: "Non-Pipeline" },
-    { company: "Pakistan Petroleum Limited", profit: 115477, assets: 913041, revenue: 291241, status: "Non-Pipeline" },
-    { company: "Government Holdings (Private) Limited", profit: 69150, assets: 495759, revenue: 137927, status: "Non-Pipeline" },
-    { company: "Pak Arab Refinery Company", profit: 55085, assets: 372402, revenue: 1143395, status: "Non-Pipeline" },
-    { company: "Pakistan State Oil Company Limited", profit: 19650, assets: 1063519, revenue: 3742082, status: "Non-Pipeline" },
-    { company: "Sui Northern Gas Pipelines Limited", profit: 10724, assets: 1975634, revenue: 1233544, status: "Non-Pipeline" },
-    { company: "Sui Southern Gas Company Limited", profit: 2765, assets: 1182630, revenue: 466652, status: "Non-Pipeline" },
-    { company: "National Power Parks Management", profit: 76815, assets: 515082, revenue: 409986, status: "Non-Pipeline" },
-    { company: "Multan Electric Power Company Limited", profit: 31879, assets: 400872, revenue: 597609, status: "Pipeline" },
-    { company: "Water and Power Development Authority", profit: 22208, assets: 1523358, revenue: 73145, status: "Non-Pipeline" },
-    { company: "National Transmission and Despatch Company", profit: 8049, assets: 781057, revenue: 71402, status: "Non-Pipeline" },
-    { company: "GENCO-I: Jamshoro Power Company Limited", profit: 4733, assets: 216311, revenue: 3007, status: "Non-Pipeline" },
-    { company: "Faisalabad Electric Supply Company Limited", profit: 998, assets: 395061, revenue: 461024, status: "Pipeline" },
-    { company: "Private Power & Infrastructure Board", profit: 704, assets: 5567, revenue: 1656, status: "Non-Pipeline" },
-    { company: "Power Planning and Monitoring Company", profit: 353, assets: 1313, revenue: 799, status: "Non-Pipeline" },
-    { company: "Power Holding (Private) Limited", profit: 187, assets: 812483, revenue: 205049, status: "Non-Pipeline" },
-    { company: "GENCO Holding Company Limited", profit: 3, assets: 163, revenue: 244, status: "Non-Pipeline" },
-    { company: "Central Power Purchase Agency", profit: -56, assets: 85641, revenue: 2964, status: "Non-Pipeline" },
-    { company: "GENCO-IV: Lakhra Power Generation Company Limited", profit: -193, assets: 16726, revenue: 0, status: "Pipeline" },
-    { company: "Neelum Jhelum Hydro Power Company", profit: -7050, assets: 441101, revenue: 29860, status: "Non-Pipeline" },
-    { company: "GENCO-III: Northern Power Generation Company Limited", profit: -7877, assets: 235665, revenue: 38716, status: "Non-Pipeline" },
-    { company: "Gujranwala Electric Power Company Limited", profit: -8583, assets: 243991, revenue: 335786, status: "Pipeline" },
-    { company: "Tribal Electric Supply Company Limited", profit: -9506, assets: 192270, revenue: 57863, status: "Non-Pipeline" },
-    { company: "Islamabad Electric Supply Company Limited", profit: -15800, assets: 391030, revenue: 326352, status: "Pipeline" },
-    { company: "GENCO-II: Central Power Generation Company Limited", profit: -17644, assets: 156825, revenue: 30968, status: "Non-Pipeline" },
-    { company: "Hyderabad Electric Supply Company Limited", profit: -22192, assets: 192055, revenue: 163581, status: "Pipeline" },
-    { company: "Lahore Electric Supply Company Limited", profit: -34595, assets: 486758, revenue: 657171, status: "Pipeline" },
-    { company: "Sukkur Electric Power Company Limited", profit: -37096, assets: 210314, revenue: 101179, status: "Pipeline" },
-    { company: "Peshawar Electric Supply Company Limited", profit: -88723, assets: 406891, revenue: 327483, status: "Pipeline" },
-    { company: "Quetta Electric Supply Company Limited", profit: -120452, assets: 288747, revenue: 157833, status: "Non-Pipeline" },
-    { company: "Port Qasim Authority", profit: 41000, assets: 269465, revenue: 91000, status: "Non-Pipeline" },
-    { company: "Karachi Port Trust", profit: 20304, assets: 247889, revenue: 48630, status: "Non-Pipeline" },
-    { company: "Pakistan National Shipping Corporation", profit: 20182, assets: 99894, revenue: 46076, status: "Non-Pipeline" },
-    { company: "National Telecommunication Corporation", profit: 1025, assets: 14706, revenue: 6306, status: "Non-Pipeline" },
-    { company: "Pakistan Infrastructure Development Company Limited", profit: 116, assets: 3028, revenue: 30, status: "Non-Pipeline" },
-    { company: "Railway Constructions Pakistan Limited", profit: 78, assets: 4642, revenue: 1940, status: "Non-Pipeline" },
-    { company: "Pakistan Railway Advisory and Consultancy Services Limited", profit: 60, assets: 949, revenue: 385, status: "Non-Pipeline" },
-    { company: "Railway Estate Development and Marketing Company", profit: 29, assets: 308, revenue: 89, status: "Non-Pipeline" },
-    { company: "Karachi Urban Transport Corporation", profit: 0, assets: 0, revenue: 0, status: "Non-Pipeline" },
-    { company: "Pakistan Railway Freight Transportation Company", profit: -791, assets: 332, revenue: 1, status: "Non-Pipeline" },
-    { company: "Gawadar Port Authority", profit: -3316, assets: 35328, revenue: 352, status: "Non-Pipeline" },
-    { company: "Pakistan Telecommunication Company Limited", profit: -6635, assets: 643598, revenue: 146738, status: "Non-Pipeline" },
-    { company: "Pakistan Post Office", profit: -13429, assets: 235145, revenue: 9905, status: "Non-Pipeline" },
-    { company: "Pakistan Railways", profit: -51375, assets: 468540, revenue: 88792, status: "Non-Pipeline" },
-    { company: "PIA Holding Company", profit: -73594, assets: 389513, revenue: 244665, status: "Pipeline" },
-    { company: "National Highway Authority", profit: -295583, assets: 5809875, revenue: 54151, status: "Non-Pipeline" },
-    { company: "Saindak Metals Limited", profit: 3467, assets: 27484, revenue: 3349, status: "Pipeline" },
-    { company: "National Security Printing Company", profit: 2906, assets: 26280, revenue: 6803, status: "Non-Pipeline" },
-    { company: "Pakistan Mineral Development Corporation", profit: 2640, assets: 15287, revenue: 4474, status: "Pipeline" },
-    { company: "National Engineering Services Pakistan", profit: 1152, assets: 19350, revenue: 12223, status: "Non-Pipeline" },
-    { company: "Printing Corporation of Pakistan", profit: 153, assets: 3709, revenue: 1314, status: "Non-Pipeline" },
-    { company: "STEDEC Technology Commercialization Corporation", profit: 36, assets: 168, revenue: 360, status: "Non-Pipeline" },
-    { company: "State Engineering Corporation", profit: -7, assets: 4862, revenue: 36, status: "Non-Pipeline" },
-    { company: "Pakistan Steel Mills Corporation", profit: -31195, assets: 824143, revenue: 860, status: "Non-Pipeline" },
-    { company: "Pakistan Industrial Development Corporation", profit: 1742, assets: 24519, revenue: 3254, status: "Non-Pipeline" },
-    { company: "Export Processing Zones Authority", profit: 1506, assets: 10562, revenue: 5267, status: "Non-Pipeline" },
-    { company: "National Construction Limited", profit: 3, assets: 847, revenue: 370, status: "Non-Pipeline" },
-    { company: "Pakistan Expo Centers", profit: -194, assets: 10077, revenue: 435, status: "Non-Pipeline" },
-    { company: "Trading Corporation of Pakistan", profit: 2601, assets: 369316, revenue: 481, status: "Non-Pipeline" },
-    { company: "National Fertilizer Corporation of Pakistan", profit: 612, assets: 7468, revenue: 1226, status: "Non-Pipeline" },
-    { company: "Pakistan Agricultural Storage & Services Corporation Limited", profit: -1681, assets: 395813, revenue: 254948, status: "Non-Pipeline" },
-    { company: "Utility Stores Corporation", profit: -2264, assets: 59822, revenue: 84219, status: "Non-Pipeline" },
-    { company: "Overseas Employment Corporation", profit: 541, assets: 2063, revenue: 633, status: "Non-Pipeline" },
-    { company: "Pakistan Television Corporation Limited", profit: 202, assets: 28543, revenue: 18397, status: "Non-Pipeline" },
-    { company: "Pakistan Tourism Development Corporation", profit: 14, assets: 712, revenue: 0, status: "Non-Pipeline" },
-    { company: "Pakistan Revenue Automation", profit: 7, assets: 1360, revenue: 1855, status: "Non-Pipeline" },
-    { company: "Pakistan Broadcasting Corporation", profit: -990, assets: 3667, revenue: 6996, status: "Non-Pipeline" }
-  ].map(d => ({
-    ...d,
-    margin: d.revenue > 0 ? (d.profit / d.revenue) * 100 : 0
-  }));
-
-  const colors = {
-    Pipeline: '#05274f',
-    'Non-Pipeline': '#fba733'
-  };
-
-  // Filter data based on checkboxes
-  const filteredData = data.filter(d => {
-    if (d.status === 'Pipeline' && !showPipeline) return false;
-    if (d.status === 'Non-Pipeline' && !showNonPipeline) return false;
-    return true;
-  });
-
-  // Fixed configuration: Revenue (X) vs Profit (Y), bubble size by revenue
-  const axisConfig = 'revenueX';
-  const bubbleSize = 'revenue';
-
-  const margin = { top: 60, right: 120, bottom: 80, left: 100 };
-  const width = 1000;
-  const height = 600;
-  const plotWidth = width - margin.left - margin.right;
-  const plotHeight = height - margin.top - margin.bottom;
-
-  const getXValue = (d) => d.revenue;
-  const getYValue = (d) => d.profit;
-
-  const xValues = filteredData.map(getXValue);
-  const yValues = filteredData.map(getYValue);
-
-  // Calculate aggregate averages for reference lines (always based on ALL data)
-  const avgRevenue = data.reduce((sum, d) => sum + d.revenue, 0) / data.length;
-  const avgProfit = data.reduce((sum, d) => sum + d.profit, 0) / data.length;
-
-  const xMin = Math.min(...xValues, 0);
-  const xMax = Math.max(...xValues);
-  const yMin = Math.min(...yValues, 0);
-  const yMax = Math.max(...yValues);
-
-  const xPadding = (xMax - xMin) * 0.05;
-  const yPadding = (yMax - yMin) * 0.05;
-
-  const xScale = (value) => ((value - xMin + xPadding) / (xMax - xMin + 2 * xPadding)) * plotWidth;
-  const yScale = (value) => plotHeight - ((value - yMin + yPadding) / (yMax - yMin + 2 * yPadding)) * plotHeight;
-
-  const zeroX = xScale(0);
-  const zeroY = yScale(0);
-
-  const getBubbleRadius = (d) => {
-    const maxRevenue = Math.max(...filteredData.map(d => d.revenue));
-    return Math.max(3, Math.min(25, (d.revenue / maxRevenue) * 20 + 3));
-  };
-
-  const formatNumber = (num, isRevenue = false) => {
-    if (isRevenue) {
-      // Divide revenue by 10^6 (millions)
-      return Math.round(num / 1000000).toLocaleString();
-    } else {
-      // Divide profit by 10^3 (thousands)
-      return Math.round(num / 1000).toLocaleString();
-    }
-  };
-
-  // Function to generate nice round tick values
-  const getNiceTickValues = (min, max, isRevenue = false, numTicks = 6) => {
-    const range = max - min;
-    
-    if (isRevenue) {
-      // For revenue (in trillions), use nice decimal increments
-      // Convert to trillions for calculation
-      const minT = min / 1000000;
-      const maxT = max / 1000000;
-      const rangeT = maxT - minT;
-      
-      // Nice steps in trillions: 0.25, 0.5, 1, 2, 5, 10, etc.
-      const niceStepsT = [0.1, 0.25, 0.5, 1, 2, 5, 10, 25, 50];
-      let stepSizeT = 1;
-      
-      for (let step of niceStepsT) {
-        if (rangeT / step <= numTicks && rangeT / step >= 3) {
-          stepSizeT = step;
-          break;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOE Financial Performance Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      }
-      
-      const ticks = [];
-      const startTickT = Math.floor(minT / stepSizeT) * stepSizeT;
-      
-      for (let tickT = startTickT; tickT <= maxT; tickT += stepSizeT) {
-        ticks.push(tickT * 1000000); // Convert back to original scale
-      }
-      
-      if (ticks.length === 0 || ticks[0] > min) {
-        ticks.unshift(startTickT * 1000000);
-      }
-      
-      return ticks;
-    } else {
-      // For profit (in billions), use nice increments
-      // Convert to billions for calculation
-      const minB = min / 1000;
-      const maxB = max / 1000;
-      const rangeB = maxB - minB;
-      
-      // Nice steps in billions: 10, 25, 50, 100, 250, 500, etc.
-      const niceStepsB = [5, 10, 25, 50, 100, 250, 500, 1000];
-      let stepSizeB = 50;
-      
-      for (let step of niceStepsB) {
-        if (rangeB / step <= numTicks && rangeB / step >= 3) {
-          stepSizeB = step;
-          break;
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            padding: 40px;
+            background: #ffffff;
+            min-height: 100vh;
         }
-      }
-      
-      const ticks = [];
-      const startTickB = Math.floor(minB / stepSizeB) * stepSizeB;
-      
-      for (let tickB = startTickB; tickB <= maxB; tickB += stepSizeB) {
-        ticks.push(tickB * 1000); // Convert back to original scale
-      }
-      
-      if (ticks.length === 0 || ticks[0] > min) {
-        ticks.unshift(startTickB * 1000);
-      }
-      
-      return ticks;
-    }
-  };
 
-  const xTicks = getNiceTickValues(xMin, xMax, true); // true = revenue
-  const yTicks = getNiceTickValues(yMin, yMax, false); // false = profit
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
 
-  return (
-    <div style={{ 
-      fontFamily: "'Poppins', sans-serif", 
-      padding: '40px',
-      background: '#ffffff',
-      minHeight: '100vh'
-    }}>
-      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      
-      <div style={{
-        maxWidth: '1200px',
-        margin: '0 auto',
-        background: 'white',
-        borderRadius: '20px',
-        padding: '40px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-        position: 'relative'
-      }}>
-        {/* Logo */}
-        <div style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          textAlign: 'right'
-        }}>
-          <div style={{
-            fontSize: '10px',
-            color: '#94a3b8',
-            marginBottom: '4px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px'
-          }}>
-            Powered by
-          </div>
-          <img 
-            src="data:image/webp;base64,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" 
-            alt="KSBL Logo" 
-            style={{ height: '40px', display: 'block' }}
-          />
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #2d3748;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 12px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .legend {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .legend-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .legend-item.inactive .legend-color {
+            opacity: 0.3;
+            border: 2px solid #cbd5e0;
+        }
+
+        .legend-item.inactive .legend-label {
+            opacity: 0.5;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: right;
+        }
+
+        .logo-text {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .logo img {
+            height: 40px;
+            display: block;
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .legend-label {
+            font-size: 13px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        #chartContainer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .tooltip {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 12px;
+            border: 2px solid #667eea;
+            display: none;
+        }
+
+        .tooltip.visible {
+            display: block;
+        }
+
+        .tooltip-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .tooltip-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .tooltip-item {
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .tooltip-value {
+            font-weight: 600;
+            color: #2d3748;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .data-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #4a5568;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-text">Powered by</div>
+            <img src="data:image/webp;base64,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" alt="KSBL Logo" style="height: 40px; display: block;">
         </div>
 
-        <h1 style={{
-          fontSize: '36px',
-          fontWeight: '700',
-          marginBottom: '10px',
-          color: '#2d3748',
-          letterSpacing: '-0.5px'
-        }}>
-          SOE Financial Performance Analysis
-        </h1>
-        <p style={{
-          fontSize: '16px',
-          color: '#718096',
-          marginBottom: '30px'
-        }}>
-          Interactive visualization of state-owned enterprises by privatization status
-        </p>
+        <h1>SOE Financial Performance Analysis</h1>
+        <p class="subtitle">Interactive visualization of state-owned enterprises by privatization status</p>
 
-        {/* Controls */}
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '20px',
-          marginBottom: '30px',
-          padding: '20px',
-          background: '#f7fafc',
-          borderRadius: '12px'
-        }}>
-          <div>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              fontWeight: '600',
-              color: '#4a5568',
-              marginBottom: '12px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}>
-              Filter by Status
-            </label>
-            <div style={{ display: 'flex', gap: '25px', alignItems: 'center' }}>
-              <div 
-                onClick={() => setShowPipeline(!showPipeline)}
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '8px', 
-                  cursor: 'pointer',
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  transition: 'background 0.2s',
-                  opacity: showPipeline ? 1 : 0.5
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <div style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: colors.Pipeline,
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                  opacity: showPipeline ? 1 : 0.3,
-                  border: showPipeline ? '2px solid transparent' : '2px solid #cbd5e0',
-                  transition: 'all 0.2s'
-                }}></div>
-                <span style={{ 
-                  fontSize: '13px', 
-                  color: '#4a5568', 
-                  fontWeight: '500'
-                }}>Pipeline</span>
-              </div>
-              <div 
-                onClick={() => setShowNonPipeline(!showNonPipeline)}
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '8px', 
-                  cursor: 'pointer',
-                  padding: '8px 12px',
-                  borderRadius: '8px',
-                  transition: 'background 0.2s',
-                  opacity: showNonPipeline ? 1 : 0.5
-                }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(0, 0, 0, 0.05)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-              >
-                <div style={{
-                  width: '16px',
-                  height: '16px',
-                  borderRadius: '50%',
-                  background: colors['Non-Pipeline'],
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                  opacity: showNonPipeline ? 1 : 0.3,
-                  border: showNonPipeline ? '2px solid transparent' : '2px solid #cbd5e0',
-                  transition: 'all 0.2s'
-                }}></div>
-                <span style={{ 
-                  fontSize: '13px', 
-                  color: '#4a5568', 
-                  fontWeight: '500'
-                }}>Non-Pipeline</span>
-              </div>
+        <div class="controls">
+            <div class="control-group">
+                <label>Filter by Status</label>
+                <div class="legend">
+                    <div class="legend-item" id="pipelineItem" onclick="togglePipeline()">
+                        <div class="legend-color" style="background: #05274f;"></div>
+                        <span class="legend-label">Pipeline</span>
+                    </div>
+                    <div class="legend-item" id="nonPipelineItem" onclick="toggleNonPipeline()">
+                        <div class="legend-color" style="background: #fba733;"></div>
+                        <span class="legend-label">Non-Pipeline</span>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
-        {/* Chart */}
-        <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center',
-          marginBottom: '20px'
-        }}>
-          <svg width={width} height={height}>
-            <defs>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
+        <div id="chartContainer"></div>
 
-            <g transform={`translate(${margin.left},${margin.top})`}>
-              {/* Axes at zero */}
-              <line
-                x1={zeroX}
-                y1={0}
-                x2={zeroX}
-                y2={plotHeight}
-                stroke="#2d3748"
-                strokeWidth="2.5"
-              />
-              <line
-                x1={0}
-                y1={zeroY}
-                x2={plotWidth}
-                y2={zeroY}
-                stroke="#2d3748"
-                strokeWidth="2.5"
-              />
-
-              {/* Average reference line for Revenue (vertical) */}
-              <line
-                x1={xScale(avgRevenue)}
-                y1={0}
-                x2={xScale(avgRevenue)}
-                y2={plotHeight}
-                stroke="#718096"
-                strokeWidth="2"
-                strokeDasharray="6,4"
-              />
-              
-              {/* Average reference line for Profit (horizontal) */}
-              <line
-                x1={0}
-                y1={yScale(avgProfit)}
-                x2={plotWidth}
-                y2={yScale(avgProfit)}
-                stroke="#718096"
-                strokeWidth="2"
-                strokeDasharray="6,4"
-              />
-
-              {/* X-axis ticks and labels */}
-              {xTicks.map((tick, i) => (
-                <g key={`x-tick-${i}`}>
-                  <line
-                    x1={xScale(tick)}
-                    y1={plotHeight}
-                    x2={xScale(tick)}
-                    y2={plotHeight + 6}
-                    stroke="#4a5568"
-                    strokeWidth="2"
-                  />
-                  <text
-                    x={xScale(tick)}
-                    y={plotHeight + 22}
-                    textAnchor="middle"
-                    fontSize="12"
-                    fill="#4a5568"
-                    fontFamily="'Poppins', sans-serif"
-                    fontWeight="500"
-                  >
-                    {formatNumber(tick, true)}
-                  </text>
-                </g>
-              ))}
-
-              {/* Y-axis ticks and labels */}
-              {yTicks.map((tick, i) => (
-                <g key={`y-tick-${i}`}>
-                  <line
-                    x1={-6}
-                    y1={yScale(tick)}
-                    x2={0}
-                    y2={yScale(tick)}
-                    stroke="#4a5568"
-                    strokeWidth="2"
-                  />
-                  <text
-                    x={-12}
-                    y={yScale(tick)}
-                    textAnchor="end"
-                    dominantBaseline="middle"
-                    fontSize="12"
-                    fill="#4a5568"
-                    fontFamily="'Poppins', sans-serif"
-                    fontWeight="500"
-                  >
-                    {formatNumber(tick, false)}
-                  </text>
-                </g>
-              ))}
-
-              {/* Data points */}
-              {filteredData.map((d, i) => {
-                const actualIndex = data.indexOf(d);
-                return (
-                  <circle
-                    key={actualIndex}
-                    cx={xScale(getXValue(d))}
-                    cy={yScale(getYValue(d))}
-                    r={hoveredPoint === actualIndex ? getBubbleRadius(d) * 1.3 : getBubbleRadius(d)}
-                    fill={colors[d.status]}
-                    opacity={hoveredPoint === null || hoveredPoint === actualIndex ? 0.75 : 0.25}
-                    stroke={hoveredPoint === actualIndex ? '#2d3748' : 'white'}
-                    strokeWidth={hoveredPoint === actualIndex ? 2.5 : 1.5}
-                    onMouseEnter={() => setHoveredPoint(actualIndex)}
-                    onMouseLeave={() => setHoveredPoint(null)}
-                    style={{ 
-                      cursor: 'pointer', 
-                      transition: 'all 0.2s ease',
-                      filter: hoveredPoint === actualIndex ? 'url(#glow)' : 'none'
-                    }}
-                  />
-                );
-              })}
-
-              {/* Axis labels */}
-              <text
-                x={plotWidth / 2}
-                y={plotHeight + 55}
-                textAnchor="middle"
-                fontSize="15"
-                fontWeight="600"
-                fill="#2d3748"
-                letterSpacing="0.5px"
-              >
-                Revenue (in PKR trillions)
-              </text>
-              <text
-                x={-plotHeight / 2}
-                y={-65}
-                textAnchor="middle"
-                fontSize="15"
-                fontWeight="600"
-                fill="#2d3748"
-                letterSpacing="0.5px"
-                transform={`rotate(-90, ${-plotHeight / 2}, -65)`}
-              >
-                Net Profit (in PKR billions)
-              </text>
-            </g>
-          </svg>
+        <div id="tooltip" class="tooltip">
+            <div id="tooltipContent"></div>
         </div>
 
-        {/* Hovered point details */}
-        {hoveredPoint !== null && (
-          <div style={{
-            marginTop: '20px',
-            padding: '20px',
-            background: 'linear-gradient(135deg, #667eea15 0%, #764ba215 100%)',
-            borderRadius: '12px',
-            border: '2px solid #667eea',
-            animation: 'fadeIn 0.2s ease'
-          }}>
-            <div style={{ 
-              fontWeight: '700', 
-              fontSize: '16px',
-              marginBottom: '10px',
-              color: '#2d3748'
-            }}>
-              {data[hoveredPoint].company}
-            </div>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(4, 1fr)', 
-              gap: '15px',
-              fontSize: '14px'
-            }}>
-              <div>
-                <span style={{ color: '#718096', fontWeight: '500' }}>Status:</span>
-                <div style={{ 
-                  fontWeight: '600', 
-                  color: colors[data[hoveredPoint].status],
-                  fontFamily: "'Poppins', sans-serif"
-                }}>
-                  {data[hoveredPoint].status}
-                </div>
-              </div>
-              <div>
-                <span style={{ color: '#718096', fontWeight: '500' }}>Revenue:</span>
-                <div style={{ fontWeight: '600', color: '#2d3748', fontFamily: "'Poppins', sans-serif" }}>
-                  {data[hoveredPoint].revenue.toLocaleString()}
-                </div>
-              </div>
-              <div>
-                <span style={{ color: '#718096', fontWeight: '500' }}>Profit/Loss:</span>
-                <div style={{ fontWeight: '600', color: '#2d3748', fontFamily: "'Poppins', sans-serif" }}>
-                  {data[hoveredPoint].profit.toLocaleString()}
-                </div>
-              </div>
-              <div>
-                <span style={{ color: '#718096', fontWeight: '500' }}>Net Margin:</span>
-                <div style={{ fontWeight: '600', color: '#2d3748', fontFamily: "'Poppins', sans-serif" }}>
-                  {data[hoveredPoint].margin.toFixed(1)}%
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Data summary for verification */}
-        <div style={{
-          marginTop: '20px',
-          padding: '15px',
-          background: '#f7fafc',
-          borderRadius: '8px',
-          fontSize: '12px',
-          color: '#4a5568',
-          fontFamily: "'Poppins', sans-serif"
-        }}>
-          <strong>Data Summary:</strong> {filteredData.length} of {data.length} companies displayed | 
-          Max Revenue: {Math.max(...data.map(d => d.revenue)).toLocaleString()} | 
-          Max Profit: {Math.max(...data.map(d => d.profit)).toLocaleString()} | 
-          Min Profit: {Math.min(...data.map(d => d.profit)).toLocaleString()}
-        </div>
-      </div>
+        <div class="data-summary" id="dataSummary"></div>
     </div>
-  );
-};
 
-export default BubbleChart;
+    <script>
+        const data = [
+            { company: "National Bank of Pakistan", profit: 27494, assets: 7110447, revenue: 206749, status: "Non-Pipeline" },
+            { company: "State Life Insurance Corporation", profit: 18370, assets: 2112588, revenue: 522883, status: "Pipeline" },
+            { company: "Pak Kuwait Investment Company", profit: 15246, assets: 1062169, revenue: 24684, status: "Non-Pipeline" },
+            { company: "National Insurance Company Limited", profit: 10002, assets: 138763, revenue: 24059, status: "Pipeline" },
+            { company: "Zarai Taraqiati Bank Limited", profit: 8409, assets: 694530, revenue: 23247, status: "Pipeline" },
+            { company: "Pak China Investment Company Limited", profit: 2312, assets: 73426, revenue: 4773, status: "Non-Pipeline" },
+            { company: "Pakistan Reinsurance Company Limited", profit: 2270, assets: 73344, revenue: 10172, status: "Pipeline" },
+            { company: "House Building Finance Company Limited", profit: 2238, assets: 60237, revenue: 5195, status: "Pipeline" },
+            { company: "Exim Bank of Pakistan Limited", profit: 2231, assets: 22269, revenue: 2664, status: "Non-Pipeline" },
+            { company: "National Investment Trust Limited", profit: 1166, assets: 16343, revenue: 3153, status: "Non-Pipeline" },
+            { company: "Pak Iran Investment Company", profit: 733, assets: 38568, revenue: 1810, status: "Non-Pipeline" },
+            { company: "Pak Brunei Investment Company", profit: 591, assets: 226538, revenue: 1622, status: "Non-Pipeline" },
+            { company: "Saudi Pak Industrial and Agricultural Investment Company Limited", profit: 552, assets: 71680, revenue: 1400, status: "Non-Pipeline" },
+            { company: "Postal Life Insurance Company Limited", profit: 498, assets: 85253, revenue: 9646, status: "Non-Pipeline" },
+            { company: "First Women Bank Limited", profit: 410, assets: 57503, revenue: 2085, status: "Pipeline" },
+            { company: "Pak Oman Investment Company", profit: 61, assets: 413928, revenue: 1038, status: "Non-Pipeline" },
+            { company: "Pak Libya Holding Company", profit: -544, assets: 511477, revenue: 417, status: "Non-Pipeline" },
+            { company: "Oil and Gas Development Company Limited", profit: 208976, assets: 1604254, revenue: 463698, status: "Non-Pipeline" },
+            { company: "Pakistan Petroleum Limited", profit: 115477, assets: 913041, revenue: 291241, status: "Non-Pipeline" },
+            { company: "Government Holdings (Private) Limited", profit: 69150, assets: 495759, revenue: 137927, status: "Non-Pipeline" },
+            { company: "Pak Arab Refinery Company", profit: 55085, assets: 372402, revenue: 1143395, status: "Non-Pipeline" },
+            { company: "Pakistan State Oil Company Limited", profit: 19650, assets: 1063519, revenue: 3742082, status: "Non-Pipeline" },
+            { company: "Sui Northern Gas Pipelines Limited", profit: 10724, assets: 1975634, revenue: 1233544, status: "Non-Pipeline" },
+            { company: "Sui Southern Gas Company Limited", profit: 2765, assets: 1182630, revenue: 466652, status: "Non-Pipeline" },
+            { company: "National Power Parks Management", profit: 76815, assets: 515082, revenue: 409986, status: "Non-Pipeline" },
+            { company: "Multan Electric Power Company Limited", profit: 31879, assets: 400872, revenue: 597609, status: "Pipeline" },
+            { company: "Water and Power Development Authority", profit: 22208, assets: 1523358, revenue: 73145, status: "Non-Pipeline" },
+            { company: "National Transmission and Despatch Company", profit: 8049, assets: 781057, revenue: 71402, status: "Non-Pipeline" },
+            { company: "GENCO-I: Jamshoro Power Company Limited", profit: 4733, assets: 216311, revenue: 3007, status: "Non-Pipeline" },
+            { company: "Faisalabad Electric Supply Company Limited", profit: 998, assets: 395061, revenue: 461024, status: "Pipeline" },
+            { company: "Private Power & Infrastructure Board", profit: 704, assets: 5567, revenue: 1656, status: "Non-Pipeline" },
+            { company: "Power Planning and Monitoring Company", profit: 353, assets: 1313, revenue: 799, status: "Non-Pipeline" },
+            { company: "Power Holding (Private) Limited", profit: 187, assets: 812483, revenue: 205049, status: "Non-Pipeline" },
+            { company: "GENCO Holding Company Limited", profit: 3, assets: 163, revenue: 244, status: "Non-Pipeline" },
+            { company: "Central Power Purchase Agency", profit: -56, assets: 85641, revenue: 2964, status: "Non-Pipeline" },
+            { company: "GENCO-IV: Lakhra Power Generation Company Limited", profit: -193, assets: 16726, revenue: 0, status: "Pipeline" },
+            { company: "Neelum Jhelum Hydro Power Company", profit: -7050, assets: 441101, revenue: 29860, status: "Non-Pipeline" },
+            { company: "GENCO-III: Northern Power Generation Company Limited", profit: -7877, assets: 235665, revenue: 38716, status: "Non-Pipeline" },
+            { company: "Gujranwala Electric Power Company Limited", profit: -8583, assets: 243991, revenue: 335786, status: "Pipeline" },
+            { company: "Tribal Electric Supply Company Limited", profit: -9506, assets: 192270, revenue: 57863, status: "Non-Pipeline" },
+            { company: "Islamabad Electric Supply Company Limited", profit: -15800, assets: 391030, revenue: 326352, status: "Pipeline" },
+            { company: "GENCO-II: Central Power Generation Company Limited", profit: -17644, assets: 156825, revenue: 30968, status: "Non-Pipeline" },
+            { company: "Hyderabad Electric Supply Company Limited", profit: -22192, assets: 192055, revenue: 163581, status: "Pipeline" },
+            { company: "Lahore Electric Supply Company Limited", profit: -34595, assets: 486758, revenue: 657171, status: "Pipeline" },
+            { company: "Sukkur Electric Power Company Limited", profit: -37096, assets: 210314, revenue: 101179, status: "Pipeline" },
+            { company: "Peshawar Electric Supply Company Limited", profit: -88723, assets: 406891, revenue: 327483, status: "Pipeline" },
+            { company: "Quetta Electric Supply Company Limited", profit: -120452, assets: 288747, revenue: 157833, status: "Non-Pipeline" },
+            { company: "Port Qasim Authority", profit: 41000, assets: 269465, revenue: 91000, status: "Non-Pipeline" },
+            { company: "Karachi Port Trust", profit: 20304, assets: 247889, revenue: 48630, status: "Non-Pipeline" },
+            { company: "Pakistan National Shipping Corporation", profit: 20182, assets: 99894, revenue: 46076, status: "Non-Pipeline" },
+            { company: "National Telecommunication Corporation", profit: 1025, assets: 14706, revenue: 6306, status: "Non-Pipeline" },
+            { company: "Pakistan Infrastructure Development Company Limited", profit: 116, assets: 3028, revenue: 30, status: "Non-Pipeline" },
+            { company: "Railway Constructions Pakistan Limited", profit: 78, assets: 4642, revenue: 1940, status: "Non-Pipeline" },
+            { company: "Pakistan Railway Advisory and Consultancy Services Limited", profit: 60, assets: 949, revenue: 385, status: "Non-Pipeline" },
+            { company: "Railway Estate Development and Marketing Company", profit: 29, assets: 308, revenue: 89, status: "Non-Pipeline" },
+            { company: "Karachi Urban Transport Corporation", profit: 0, assets: 0, revenue: 0, status: "Non-Pipeline" },
+            { company: "Pakistan Railway Freight Transportation Company", profit: -791, assets: 332, revenue: 1, status: "Non-Pipeline" },
+            { company: "Gawadar Port Authority", profit: -3316, assets: 35328, revenue: 352, status: "Non-Pipeline" },
+            { company: "Pakistan Telecommunication Company Limited", profit: -6635, assets: 643598, revenue: 146738, status: "Non-Pipeline" },
+            { company: "Pakistan Post Office", profit: -13429, assets: 235145, revenue: 9905, status: "Non-Pipeline" },
+            { company: "Pakistan Railways", profit: -51375, assets: 468540, revenue: 88792, status: "Non-Pipeline" },
+            { company: "PIA Holding Company", profit: -73594, assets: 389513, revenue: 244665, status: "Pipeline" },
+            { company: "National Highway Authority", profit: -295583, assets: 5809875, revenue: 54151, status: "Non-Pipeline" },
+            { company: "Saindak Metals Limited", profit: 3467, assets: 27484, revenue: 3349, status: "Pipeline" },
+            { company: "National Security Printing Company", profit: 2906, assets: 26280, revenue: 6803, status: "Non-Pipeline" },
+            { company: "Pakistan Mineral Development Corporation", profit: 2640, assets: 15287, revenue: 4474, status: "Pipeline" },
+            { company: "National Engineering Services Pakistan", profit: 1152, assets: 19350, revenue: 12223, status: "Non-Pipeline" },
+            { company: "Printing Corporation of Pakistan", profit: 153, assets: 3709, revenue: 1314, status: "Non-Pipeline" },
+            { company: "STEDEC Technology Commercialization Corporation", profit: 36, assets: 168, revenue: 360, status: "Non-Pipeline" },
+            { company: "State Engineering Corporation", profit: -7, assets: 4862, revenue: 36, status: "Non-Pipeline" },
+            { company: "Pakistan Steel Mills Corporation", profit: -31195, assets: 824143, revenue: 860, status: "Non-Pipeline" },
+            { company: "Pakistan Industrial Development Corporation", profit: 1742, assets: 24519, revenue: 3254, status: "Non-Pipeline" },
+            { company: "Export Processing Zones Authority", profit: 1506, assets: 10562, revenue: 5267, status: "Non-Pipeline" },
+            { company: "National Construction Limited", profit: 3, assets: 847, revenue: 370, status: "Non-Pipeline" },
+            { company: "Pakistan Expo Centers", profit: -194, assets: 10077, revenue: 435, status: "Non-Pipeline" },
+            { company: "Trading Corporation of Pakistan", profit: 2601, assets: 369316, revenue: 481, status: "Non-Pipeline" },
+            { company: "National Fertilizer Corporation of Pakistan", profit: 612, assets: 7468, revenue: 1226, status: "Non-Pipeline" },
+            { company: "Pakistan Agricultural Storage & Services Corporation Limited", profit: -1681, assets: 395813, revenue: 254948, status: "Non-Pipeline" },
+            { company: "Utility Stores Corporation", profit: -2264, assets: 59822, revenue: 84219, status: "Non-Pipeline" },
+            { company: "Overseas Employment Corporation", profit: 541, assets: 2063, revenue: 633, status: "Non-Pipeline" },
+            { company: "Pakistan Television Corporation Limited", profit: 202, assets: 28543, revenue: 18397, status: "Non-Pipeline" },
+            { company: "Pakistan Tourism Development Corporation", profit: 14, assets: 712, revenue: 0, status: "Non-Pipeline" },
+            { company: "Pakistan Revenue Automation", profit: 7, assets: 1360, revenue: 1855, status: "Non-Pipeline" },
+            { company: "Pakistan Broadcasting Corporation", profit: -990, assets: 3667, revenue: 6996, status: "Non-Pipeline" }
+        ].map(d => ({
+            ...d,
+            margin: d.revenue > 0 ? (d.profit / d.revenue) * 100 : 0
+        }));
+
+        const colors = {
+            Pipeline: '#05274f',
+            'Non-Pipeline': '#fba733'
+        };
+
+        const margin = { top: 60, right: 120, bottom: 80, left: 100 };
+        const width = 1000;
+        const height = 600;
+        const plotWidth = width - margin.left - margin.right;
+        const plotHeight = height - margin.top - margin.bottom;
+
+        let hoveredPoint = null;
+
+        let showPipeline = true;
+        let showNonPipeline = true;
+
+        function togglePipeline() {
+            showPipeline = !showPipeline;
+            document.getElementById('pipelineItem').classList.toggle('inactive', !showPipeline);
+            renderChart();
+        }
+
+        function toggleNonPipeline() {
+            showNonPipeline = !showNonPipeline;
+            document.getElementById('nonPipelineItem').classList.toggle('inactive', !showNonPipeline);
+            renderChart();
+        }
+
+        function renderChart() {
+            // Filter data based on toggles
+            const filteredData = data.filter(d => {
+                if (d.status === 'Pipeline' && !showPipeline) return false;
+                if (d.status === 'Non-Pipeline' && !showNonPipeline) return false;
+                return true;
+            });
+
+            // Fixed configuration: Revenue (X) vs Profit (Y), bubble size by revenue
+            const axisConfig = 'revenueX';
+            const bubbleSize = 'revenue';
+
+            const getXValue = (d) => d.revenue;
+            const getYValue = (d) => d.profit;
+
+            const xValues = filteredData.map(getXValue);
+            const yValues = filteredData.map(getYValue);
+
+            const avgRevenue = data.reduce((sum, d) => sum + d.revenue, 0) / data.length;
+            const avgProfit = data.reduce((sum, d) => sum + d.profit, 0) / data.length;
+
+            const xMin = Math.min(...xValues, 0);
+            const xMax = Math.max(...xValues);
+            const yMin = Math.min(...yValues, 0);
+            const yMax = Math.max(...yValues);
+
+            const xPadding = (xMax - xMin) * 0.05;
+            const yPadding = (yMax - yMin) * 0.05;
+
+            const xScale = (value) => ((value - xMin + xPadding) / (xMax - xMin + 2 * xPadding)) * plotWidth;
+            const yScale = (value) => plotHeight - ((value - yMin + yPadding) / (yMax - yMin + 2 * yPadding)) * plotHeight;
+
+            const zeroX = xScale(0);
+            const zeroY = yScale(0);
+
+            const getBubbleRadius = (d) => {
+                const maxRevenue = Math.max(...filteredData.map(d => d.revenue));
+                return Math.max(3, Math.min(25, (d.revenue / maxRevenue) * 20 + 3));
+            };
+
+            const formatNumber = (num, isRevenue = false) => {
+                if (isRevenue) {
+                    return Math.round(num / 1000000).toLocaleString();
+                } else {
+                    return Math.round(num / 1000).toLocaleString();
+                }
+            };
+
+            const getNiceTickValues = (min, max, isRevenue = false, numTicks = 6) => {
+                const range = max - min;
+                
+                if (isRevenue) {
+                    // For revenue (in trillions), use nice decimal increments
+                    const minT = min / 1000000;
+                    const maxT = max / 1000000;
+                    const rangeT = maxT - minT;
+                    
+                    const niceStepsT = [0.1, 0.25, 0.5, 1, 2, 5, 10, 25, 50];
+                    let stepSizeT = 1;
+                    
+                    for (let step of niceStepsT) {
+                        if (rangeT / step <= numTicks && rangeT / step >= 3) {
+                            stepSizeT = step;
+                            break;
+                        }
+                    }
+                    
+                    const ticks = [];
+                    const startTickT = Math.floor(minT / stepSizeT) * stepSizeT;
+                    
+                    for (let tickT = startTickT; tickT <= maxT; tickT += stepSizeT) {
+                        ticks.push(tickT * 1000000);
+                    }
+                    
+                    if (ticks.length === 0 || ticks[0] > min) {
+                        ticks.unshift(startTickT * 1000000);
+                    }
+                    
+                    return ticks;
+                } else {
+                    // For profit (in billions)
+                    const minB = min / 1000;
+                    const maxB = max / 1000;
+                    const rangeB = maxB - minB;
+                    
+                    const niceStepsB = [5, 10, 25, 50, 100, 250, 500, 1000];
+                    let stepSizeB = 50;
+                    
+                    for (let step of niceStepsB) {
+                        if (rangeB / step <= numTicks && rangeB / step >= 3) {
+                            stepSizeB = step;
+                            break;
+                        }
+                    }
+                    
+                    const ticks = [];
+                    const startTickB = Math.floor(minB / stepSizeB) * stepSizeB;
+                    
+                    for (let tickB = startTickB; tickB <= maxB; tickB += stepSizeB) {
+                        ticks.push(tickB * 1000);
+                    }
+                    
+                    if (ticks.length === 0 || ticks[0] > min) {
+                        ticks.unshift(startTickB * 1000);
+                    }
+                    
+                    return ticks;
+                }
+            };
+
+            const xTicks = getNiceTickValues(xMin, xMax, true);
+            const yTicks = getNiceTickValues(yMin, yMax, false);
+
+            let svg = `<svg width="${width}" height="${height}">
+                <defs>
+                    <filter id="glow">
+                        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                </defs>
+                <g transform="translate(${margin.left},${margin.top})">`;
+
+            // Axes at zero
+            svg += `<line x1="${zeroX}" y1="0" x2="${zeroX}" y2="${plotHeight}" stroke="#2d3748" stroke-width="2.5"/>`;
+            svg += `<line x1="0" y1="${zeroY}" x2="${plotWidth}" y2="${zeroY}" stroke="#2d3748" stroke-width="2.5"/>`;
+
+            // Average reference lines
+            svg += `<line x1="${xScale(avgRevenue)}" y1="0" x2="${xScale(avgRevenue)}" y2="${plotHeight}" stroke="#718096" stroke-width="2" stroke-dasharray="6,4"/>`;
+            svg += `<line x1="0" y1="${yScale(avgProfit)}" x2="${plotWidth}" y2="${yScale(avgProfit)}" stroke="#718096" stroke-width="2" stroke-dasharray="6,4"/>`;
+
+            // X-axis ticks
+            xTicks.forEach(tick => {
+                svg += `<line x1="${xScale(tick)}" y1="${plotHeight}" x2="${xScale(tick)}" y2="${plotHeight + 6}" stroke="#4a5568" stroke-width="2"/>`;
+                svg += `<text x="${xScale(tick)}" y="${plotHeight + 22}" text-anchor="middle" font-size="12" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, true)}</text>`;
+            });
+
+            // Y-axis ticks
+            yTicks.forEach(tick => {
+                svg += `<line x1="-6" y1="${yScale(tick)}" x2="0" y2="${yScale(tick)}" stroke="#4a5568" stroke-width="2"/>`;
+                svg += `<text x="-12" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="12" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
+            });
+
+            // Data points - only for filtered data
+            filteredData.forEach((d, i) => {
+                const cx = xScale(getXValue(d));
+                const cy = yScale(getYValue(d));
+                const r = getBubbleRadius(d);
+                const actualIndex = data.indexOf(d);
+                svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${colors[d.status]}" opacity="0.75" stroke="white" stroke-width="1.5" style="cursor: pointer;" onmouseover="showTooltip(${actualIndex})" onmouseout="hideTooltip()"/>`;
+            });
+
+            // Axis labels
+            svg += `<text x="${plotWidth / 2}" y="${plotHeight + 55}" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px">Revenue (in PKR trillions)</text>`;
+            svg += `<text x="${-plotHeight / 2}" y="-65" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90, ${-plotHeight / 2}, -65)">Net Profit (in PKR billions)</text>`;
+
+            svg += `</g></svg>`;
+
+            document.getElementById('chartContainer').innerHTML = svg;
+
+            // Update data summary
+            document.getElementById('dataSummary').innerHTML = `<strong>Data Summary:</strong> ${filteredData.length} of ${data.length} companies displayed | Max Revenue: ${Math.max(...data.map(d => d.revenue)).toLocaleString()} | Max Profit: ${Math.max(...data.map(d => d.profit)).toLocaleString()} | Min Profit: ${Math.min(...data.map(d => d.profit)).toLocaleString()}`;
+        }
+
+        function showTooltip(index) {
+            const d = data[index];
+            const tooltip = document.getElementById('tooltip');
+            const content = `
+                <div class="tooltip-title">${d.company}</div>
+                <div class="tooltip-grid">
+                    <div>
+                        <div class="tooltip-item">Status:</div>
+                        <div class="tooltip-value" style="color: ${colors[d.status]};">${d.status}</div>
+                    </div>
+                    <div>
+                        <div class="tooltip-item">Revenue:</div>
+                        <div class="tooltip-value">${d.revenue.toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div class="tooltip-item">Profit/Loss:</div>
+                        <div class="tooltip-value">${d.profit.toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <div class="tooltip-item">Net Margin:</div>
+                        <div class="tooltip-value">${d.margin.toFixed(1)}%</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('tooltipContent').innerHTML = content;
+            tooltip.classList.add('visible');
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').classList.remove('visible');
+        }
+
+        renderChart();
+    </script>
+</body>
+</html>
