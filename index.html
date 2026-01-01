@@ -29,6 +29,88 @@
             position: relative;
         }
 
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .logo {
+                top: 10px;
+                right: 10px;
+            }
+
+            .logo img {
+                height: 30px;
+            }
+
+            .logo-text {
+                font-size: 8px;
+            }
+
+            .controls {
+                padding: 15px;
+            }
+
+            .control-group label {
+                font-size: 11px;
+            }
+
+            .legend {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .legend-item {
+                padding: 6px 10px;
+            }
+
+            .legend-label {
+                font-size: 12px;
+            }
+
+            #chartContainer svg {
+                width: 100%;
+                height: auto;
+            }
+
+            .tooltip-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .data-summary {
+                font-size: 10px;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            .tooltip-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         h1 {
             font-size: 36px;
             font-weight: 700;
@@ -156,6 +238,13 @@
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        #chartContainer svg {
+            max-width: 100%;
+            height: auto;
         }
 
         .tooltip {
@@ -204,6 +293,93 @@
             font-size: 12px;
             color: #4a5568;
             font-family: 'Poppins', sans-serif;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 24px !important;
+                margin-bottom: 8px !important;
+            }
+
+            .subtitle {
+                font-size: 13px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .logo {
+                top: 10px;
+                right: 10px;
+            }
+
+            .logo img {
+                height: 30px;
+            }
+
+            .logo-text {
+                font-size: 8px;
+            }
+
+            .controls {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .control-group label {
+                font-size: 11px;
+                margin-bottom: 10px;
+            }
+
+            .legend {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .legend-item {
+                padding: 6px 10px;
+            }
+
+            .legend-label {
+                font-size: 12px;
+            }
+
+            #chartContainer {
+                overflow-x: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tooltip {
+                margin-top: 15px;
+                padding: 15px;
+            }
+
+            .tooltip-title {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .tooltip-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                font-size: 12px;
+            }
+
+            .data-summary {
+                font-size: 10px;
+                padding: 12px;
+                margin-top: 15px;
+            }
         }
     </style>
 </head>
@@ -349,6 +525,27 @@
         let showPipeline = true;
         let showNonPipeline = true;
 
+        // Responsive SVG dimensions
+        function getChartDimensions() {
+            const container = document.getElementById('chartContainer');
+            const containerWidth = container ? container.offsetWidth : 1000;
+            const isMobile = window.innerWidth < 768;
+            
+            if (isMobile) {
+                return {
+                    width: Math.min(containerWidth, 500),
+                    height: 400,
+                    margin: { top: 40, right: 60, bottom: 60, left: 80 }
+                };
+            } else {
+                return {
+                    width: Math.min(containerWidth, 1000),
+                    height: 600,
+                    margin: { top: 60, right: 120, bottom: 80, left: 120 }
+                };
+            }
+        }
+
         function togglePipeline() {
             showPipeline = !showPipeline;
             document.getElementById('pipelineItem').classList.toggle('inactive', !showPipeline);
@@ -368,6 +565,16 @@
                 if (d.status === 'Non-Pipeline' && !showNonPipeline) return false;
                 return true;
             });
+
+            // Responsive dimensions
+            const isMobile = window.innerWidth <= 768;
+            const margin = isMobile 
+                ? { top: 40, right: 60, bottom: 60, left: 80 }
+                : { top: 60, right: 120, bottom: 80, left: 120 };
+            const width = isMobile ? Math.min(window.innerWidth - 40, 600) : 1000;
+            const height = isMobile ? 400 : 600;
+            const plotWidth = width - margin.left - margin.right;
+            const plotHeight = height - margin.top - margin.bottom;
 
             // Fixed configuration: Revenue (X) vs Profit (Y), bubble size by revenue
             const axisConfig = 'revenueX';
@@ -489,16 +696,20 @@
             svg += `<line x1="${xScale(avgRevenue)}" y1="0" x2="${xScale(avgRevenue)}" y2="${plotHeight}" stroke="#718096" stroke-width="2" stroke-dasharray="6,4"/>`;
             svg += `<line x1="0" y1="${yScale(avgProfit)}" x2="${plotWidth}" y2="${yScale(avgProfit)}" stroke="#718096" stroke-width="2" stroke-dasharray="6,4"/>`;
 
+            // Responsive font sizes
+            const axisLabelSize = isMobile ? 12 : 15;
+            const tickLabelSize = isMobile ? 10 : 12;
+
             // X-axis ticks
             xTicks.forEach(tick => {
                 svg += `<line x1="${xScale(tick)}" y1="${plotHeight}" x2="${xScale(tick)}" y2="${plotHeight + 6}" stroke="#4a5568" stroke-width="2"/>`;
-                svg += `<text x="${xScale(tick)}" y="${plotHeight + 22}" text-anchor="middle" font-size="12" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, true)}</text>`;
+                svg += `<text x="${xScale(tick)}" y="${plotHeight + 22}" text-anchor="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, true)}</text>`;
             });
 
             // Y-axis ticks
             yTicks.forEach(tick => {
                 svg += `<line x1="-6" y1="${yScale(tick)}" x2="0" y2="${yScale(tick)}" stroke="#4a5568" stroke-width="2"/>`;
-                svg += `<text x="-12" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="12" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
+                svg += `<text x="-12" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
             });
 
             // Data points - only for filtered data
@@ -511,8 +722,8 @@
             });
 
             // Axis labels
-            svg += `<text x="${plotWidth / 2}" y="${plotHeight + 55}" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px">Revenue (in PKR trillions)</text>`;
-            svg += `<text x="-${plotHeight / 2}" y="-80" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90)">Net Income (in PKR billions)</text>`;
+            svg += `<text x="${plotWidth / 2}" y="${plotHeight + 55}" text-anchor="middle" font-size="${axisLabelSize}" font-weight="600" fill="#2d3748" letter-spacing="0.5px">Revenue (in PKR trillions)</text>`;
+            svg += `<text x="-${plotHeight / 2}" y="-80" text-anchor="middle" font-size="${axisLabelSize}" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90)">Net Income (in PKR billions)</text>`;
 
             svg += `</g></svg>`;
 
@@ -555,6 +766,13 @@
         }
 
         renderChart();
+
+        // Re-render on window resize for responsiveness
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(renderChart, 250);
+        });
     </script>
 </body>
 </html>
