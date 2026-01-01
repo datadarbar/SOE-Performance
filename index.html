@@ -215,7 +215,7 @@
         </div>
 
         <h1>SOE Financial Performance Analysis</h1>
-        <p class="subtitle">Interactive visualization of state-owned enterprises by privatization status</p>
+        <p class="subtitle">Interactive visualization of state-owned enterprises by privatization status. Hover over bubbles to view details on individual SOEs.</p>
 
         <div class="controls">
             <div class="control-group">
@@ -338,7 +338,7 @@
             'Non-Pipeline': '#fba733'
         };
 
-        const margin = { top: 60, right: 120, bottom: 80, left: 100 };
+        const margin = { top: 60, right: 120, bottom: 80, left: 120 };
         const width = 1000;
         const height = 600;
         const plotWidth = width - margin.left - margin.right;
@@ -403,9 +403,13 @@
 
             const formatNumber = (num, isRevenue = false) => {
                 if (isRevenue) {
-                    return Math.round(num / 1000000).toLocaleString();
+                    // Revenue in trillions (divide by 1,000,000)
+                    const value = num / 1000000;
+                    return value.toFixed(1);
                 } else {
-                    return Math.round(num / 1000).toLocaleString();
+                    // Profit in billions (divide by 1,000)
+                    const value = num / 1000;
+                    return Math.round(value).toLocaleString();
                 }
             };
 
@@ -413,26 +417,17 @@
                 const range = max - min;
                 
                 if (isRevenue) {
-                    // For revenue (in trillions), use nice decimal increments
+                    // For revenue (in trillions), use fixed 0.5 trillion increments
                     const minT = min / 1000000;
                     const maxT = max / 1000000;
-                    const rangeT = maxT - minT;
                     
-                    const niceStepsT = [0.1, 0.25, 0.5, 1, 2, 5, 10, 25, 50];
-                    let stepSizeT = 1;
-                    
-                    for (let step of niceStepsT) {
-                        if (rangeT / step <= numTicks && rangeT / step >= 3) {
-                            stepSizeT = step;
-                            break;
-                        }
-                    }
+                    const stepSizeT = 0.5; // Fixed 0.5 trillion spacing
                     
                     const ticks = [];
                     const startTickT = Math.floor(minT / stepSizeT) * stepSizeT;
                     
                     for (let tickT = startTickT; tickT <= maxT; tickT += stepSizeT) {
-                        ticks.push(tickT * 1000000);
+                        ticks.push(tickT * 1000000); // Convert back to original scale
                     }
                     
                     if (ticks.length === 0 || ticks[0] > min) {
@@ -517,7 +512,7 @@
 
             // Axis labels
             svg += `<text x="${plotWidth / 2}" y="${plotHeight + 55}" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px">Revenue (in PKR trillions)</text>`;
-            svg += `<text x="${-plotHeight / 2}" y="-65" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90, ${-plotHeight / 2}, -65)">Net Profit (in PKR billions)</text>`;
+            svg += `<text x="-${plotHeight / 2}" y="-80" text-anchor="middle" font-size="15" font-weight="600" fill="#2d3748" letter-spacing="0.5px" transform="rotate(-90)">Net Income (in PKR billions)</text>`;
 
             svg += `</g></svg>`;
 
