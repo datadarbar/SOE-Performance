@@ -238,8 +238,6 @@
             display: flex;
             justify-content: center;
             margin-bottom: 20px;
-            overflow-x: auto;
-            overflow-y: hidden;
         }
 
         #chartContainer svg {
@@ -420,90 +418,83 @@
 
     <script>
         const data = [
-            { company: "National Bank of Pakistan", profit: 27494, assets: 7110447, revenue: 206749, status: "Non-Pipeline" },
-            { company: "State Life Insurance Corporation", profit: 18370, assets: 2112588, revenue: 522883, status: "Pipeline" },
-            { company: "Pak Kuwait Investment Company", profit: 15246, assets: 1062169, revenue: 24684, status: "Non-Pipeline" },
-            { company: "National Insurance Company Limited", profit: 10002, assets: 138763, revenue: 24059, status: "Pipeline" },
-            { company: "Zarai Taraqiati Bank Limited", profit: 8409, assets: 694530, revenue: 23247, status: "Pipeline" },
-            { company: "Pak China Investment Company Limited", profit: 2312, assets: 73426, revenue: 4773, status: "Non-Pipeline" },
-            { company: "Pakistan Reinsurance Company Limited", profit: 2270, assets: 73344, revenue: 10172, status: "Pipeline" },
-            { company: "House Building Finance Company Limited", profit: 2238, assets: 60237, revenue: 5195, status: "Pipeline" },
-            { company: "Exim Bank of Pakistan Limited", profit: 2231, assets: 22269, revenue: 2664, status: "Non-Pipeline" },
-            { company: "National Investment Trust Limited", profit: 1166, assets: 16343, revenue: 3153, status: "Non-Pipeline" },
-            { company: "Pak Iran Investment Company", profit: 733, assets: 38568, revenue: 1810, status: "Non-Pipeline" },
-            { company: "Pak Brunei Investment Company", profit: 591, assets: 226538, revenue: 1622, status: "Non-Pipeline" },
-            { company: "Saudi Pak Industrial and Agricultural Investment Company Limited", profit: 552, assets: 71680, revenue: 1400, status: "Non-Pipeline" },
-            { company: "Postal Life Insurance Company Limited", profit: 498, assets: 85253, revenue: 9646, status: "Non-Pipeline" },
-            { company: "First Women Bank Limited", profit: 410, assets: 57503, revenue: 2085, status: "Pipeline" },
-            { company: "Pak Oman Investment Company", profit: 61, assets: 413928, revenue: 1038, status: "Non-Pipeline" },
-            { company: "Pak Libya Holding Company", profit: -544, assets: 511477, revenue: 417, status: "Non-Pipeline" },
-            { company: "Oil and Gas Development Company Limited", profit: 208976, assets: 1604254, revenue: 463698, status: "Non-Pipeline" },
-            { company: "Pakistan Petroleum Limited", profit: 115477, assets: 913041, revenue: 291241, status: "Non-Pipeline" },
-            { company: "Government Holdings (Private) Limited", profit: 69150, assets: 495759, revenue: 137927, status: "Non-Pipeline" },
-            { company: "Pak Arab Refinery Company", profit: 55085, assets: 372402, revenue: 1143395, status: "Non-Pipeline" },
-            { company: "Pakistan State Oil Company Limited", profit: 19650, assets: 1063519, revenue: 3742082, status: "Non-Pipeline" },
-            { company: "Sui Northern Gas Pipelines Limited", profit: 10724, assets: 1975634, revenue: 1233544, status: "Non-Pipeline" },
-            { company: "Sui Southern Gas Company Limited", profit: 2765, assets: 1182630, revenue: 466652, status: "Non-Pipeline" },
-            { company: "National Power Parks Management", profit: 76815, assets: 515082, revenue: 409986, status: "Non-Pipeline" },
-            { company: "Multan Electric Power Company Limited", profit: 31879, assets: 400872, revenue: 597609, status: "Pipeline" },
-            { company: "Water and Power Development Authority", profit: 22208, assets: 1523358, revenue: 73145, status: "Non-Pipeline" },
-            { company: "National Transmission and Despatch Company", profit: 8049, assets: 781057, revenue: 71402, status: "Non-Pipeline" },
-            { company: "GENCO-I: Jamshoro Power Company Limited", profit: 4733, assets: 216311, revenue: 3007, status: "Non-Pipeline" },
-            { company: "Faisalabad Electric Supply Company Limited", profit: 998, assets: 395061, revenue: 461024, status: "Pipeline" },
-            { company: "Private Power & Infrastructure Board", profit: 704, assets: 5567, revenue: 1656, status: "Non-Pipeline" },
-            { company: "Power Planning and Monitoring Company", profit: 353, assets: 1313, revenue: 799, status: "Non-Pipeline" },
-            { company: "Power Holding (Private) Limited", profit: 187, assets: 812483, revenue: 205049, status: "Non-Pipeline" },
-            { company: "GENCO Holding Company Limited", profit: 3, assets: 163, revenue: 244, status: "Non-Pipeline" },
-            { company: "Central Power Purchase Agency", profit: -56, assets: 85641, revenue: 2964, status: "Non-Pipeline" },
-            { company: "GENCO-IV: Lakhra Power Generation Company Limited", profit: -193, assets: 16726, revenue: 0, status: "Pipeline" },
-            { company: "Neelum Jhelum Hydro Power Company", profit: -7050, assets: 441101, revenue: 29860, status: "Non-Pipeline" },
-            { company: "GENCO-III: Northern Power Generation Company Limited", profit: -7877, assets: 235665, revenue: 38716, status: "Non-Pipeline" },
-            { company: "Gujranwala Electric Power Company Limited", profit: -8583, assets: 243991, revenue: 335786, status: "Pipeline" },
-            { company: "Tribal Electric Supply Company Limited", profit: -9506, assets: 192270, revenue: 57863, status: "Non-Pipeline" },
-            { company: "Islamabad Electric Supply Company Limited", profit: -15800, assets: 391030, revenue: 326352, status: "Pipeline" },
-            { company: "GENCO-II: Central Power Generation Company Limited", profit: -17644, assets: 156825, revenue: 30968, status: "Non-Pipeline" },
-            { company: "Hyderabad Electric Supply Company Limited", profit: -22192, assets: 192055, revenue: 163581, status: "Pipeline" },
-            { company: "Lahore Electric Supply Company Limited", profit: -34595, assets: 486758, revenue: 657171, status: "Pipeline" },
-            { company: "Sukkur Electric Power Company Limited", profit: -37096, assets: 210314, revenue: 101179, status: "Pipeline" },
-            { company: "Peshawar Electric Supply Company Limited", profit: -88723, assets: 406891, revenue: 327483, status: "Pipeline" },
-            { company: "Quetta Electric Supply Company Limited", profit: -120452, assets: 288747, revenue: 157833, status: "Non-Pipeline" },
-            { company: "Port Qasim Authority", profit: 41000, assets: 269465, revenue: 91000, status: "Non-Pipeline" },
-            { company: "Karachi Port Trust", profit: 20304, assets: 247889, revenue: 48630, status: "Non-Pipeline" },
-            { company: "Pakistan National Shipping Corporation", profit: 20182, assets: 99894, revenue: 46076, status: "Non-Pipeline" },
-            { company: "National Telecommunication Corporation", profit: 1025, assets: 14706, revenue: 6306, status: "Non-Pipeline" },
-            { company: "Pakistan Infrastructure Development Company Limited", profit: 116, assets: 3028, revenue: 30, status: "Non-Pipeline" },
-            { company: "Railway Constructions Pakistan Limited", profit: 78, assets: 4642, revenue: 1940, status: "Non-Pipeline" },
-            { company: "Pakistan Railway Advisory and Consultancy Services Limited", profit: 60, assets: 949, revenue: 385, status: "Non-Pipeline" },
-            { company: "Railway Estate Development and Marketing Company", profit: 29, assets: 308, revenue: 89, status: "Non-Pipeline" },
-            { company: "Karachi Urban Transport Corporation", profit: 0, assets: 0, revenue: 0, status: "Non-Pipeline" },
-            { company: "Pakistan Railway Freight Transportation Company", profit: -791, assets: 332, revenue: 1, status: "Non-Pipeline" },
-            { company: "Gawadar Port Authority", profit: -3316, assets: 35328, revenue: 352, status: "Non-Pipeline" },
-            { company: "Pakistan Telecommunication Company Limited", profit: -6635, assets: 643598, revenue: 146738, status: "Non-Pipeline" },
-            { company: "Pakistan Post Office", profit: -13429, assets: 235145, revenue: 9905, status: "Non-Pipeline" },
-            { company: "Pakistan Railways", profit: -51375, assets: 468540, revenue: 88792, status: "Non-Pipeline" },
-            { company: "PIA Holding Company", profit: -73594, assets: 389513, revenue: 244665, status: "Pipeline" },
-            { company: "National Highway Authority", profit: -295583, assets: 5809875, revenue: 54151, status: "Non-Pipeline" },
-            { company: "Saindak Metals Limited", profit: 3467, assets: 27484, revenue: 3349, status: "Pipeline" },
-            { company: "National Security Printing Company", profit: 2906, assets: 26280, revenue: 6803, status: "Non-Pipeline" },
-            { company: "Pakistan Mineral Development Corporation", profit: 2640, assets: 15287, revenue: 4474, status: "Pipeline" },
-            { company: "National Engineering Services Pakistan", profit: 1152, assets: 19350, revenue: 12223, status: "Non-Pipeline" },
-            { company: "Printing Corporation of Pakistan", profit: 153, assets: 3709, revenue: 1314, status: "Non-Pipeline" },
-            { company: "STEDEC Technology Commercialization Corporation", profit: 36, assets: 168, revenue: 360, status: "Non-Pipeline" },
-            { company: "State Engineering Corporation", profit: -7, assets: 4862, revenue: 36, status: "Non-Pipeline" },
-            { company: "Pakistan Steel Mills Corporation", profit: -31195, assets: 824143, revenue: 860, status: "Non-Pipeline" },
-            { company: "Pakistan Industrial Development Corporation", profit: 1742, assets: 24519, revenue: 3254, status: "Non-Pipeline" },
-            { company: "Export Processing Zones Authority", profit: 1506, assets: 10562, revenue: 5267, status: "Non-Pipeline" },
-            { company: "National Construction Limited", profit: 3, assets: 847, revenue: 370, status: "Non-Pipeline" },
-            { company: "Pakistan Expo Centers", profit: -194, assets: 10077, revenue: 435, status: "Non-Pipeline" },
-            { company: "Trading Corporation of Pakistan", profit: 2601, assets: 369316, revenue: 481, status: "Non-Pipeline" },
-            { company: "National Fertilizer Corporation of Pakistan", profit: 612, assets: 7468, revenue: 1226, status: "Non-Pipeline" },
-            { company: "Pakistan Agricultural Storage & Services Corporation Limited", profit: -1681, assets: 395813, revenue: 254948, status: "Non-Pipeline" },
-            { company: "Utility Stores Corporation", profit: -2264, assets: 59822, revenue: 84219, status: "Non-Pipeline" },
-            { company: "Overseas Employment Corporation", profit: 541, assets: 2063, revenue: 633, status: "Non-Pipeline" },
-            { company: "Pakistan Television Corporation Limited", profit: 202, assets: 28543, revenue: 18397, status: "Non-Pipeline" },
-            { company: "Pakistan Tourism Development Corporation", profit: 14, assets: 712, revenue: 0, status: "Non-Pipeline" },
-            { company: "Pakistan Revenue Automation", profit: 7, assets: 1360, revenue: 1855, status: "Non-Pipeline" },
-            { company: "Pakistan Broadcasting Corporation", profit: -990, assets: 3667, revenue: 6996, status: "Non-Pipeline" }
+            { company: "Central Power Purchase Agency (Guarantee) Limited", profit: -2042, revenue: 349, status: "Non-Pipeline" },
+            { company: "Exim Bank of Pakistan Limited", profit: 2547, revenue: 2938, status: "Non-Pipeline" },
+            { company: "Faisalabad Electric Supply Company Limited", profit: 9433, revenue: 470120, status: "Pipeline" },
+            { company: "First Women Bank Limited", profit: 194, revenue: 2002, status: "Pipeline" },
+            { company: "Gawadar Port Authority", profit: 0, revenue: 3113, status: "Non-Pipeline" },
+            { company: "GENCO Holding Company Limited", profit: 11, revenue: 222, status: "Non-Pipeline" },
+            { company: "GENCO-I: Jamshoro Power Company Limited", profit: 554, revenue: 6033, status: "Non-Pipeline" },
+            { company: "GENCO-II: Central Power Generation Company Limited", profit: -10313, revenue: 30553, status: "Non-Pipeline" },
+            { company: "GENCO-III: Northern Power Generation Company Limited", profit: 4510, revenue: 57310, status: "Non-Pipeline" },
+            { company: "Government Holdings (Private) Limited", profit: 48503, revenue: 107668, status: "Non-Pipeline" },
+            { company: "Gujranwala Electric Power Company Limited", profit: 13662, revenue: 362783, status: "Pipeline" },
+            { company: "Hazara Electric Supply Company Limited", profit: -41, revenue: 0, status: "Non-Pipeline" },
+            { company: "House Building Finance Company Limited", profit: 1985, revenue: 5045, status: "Pipeline" },
+            { company: "Hyderabad Electric Supply Company Limited", profit: -12907, revenue: 190541, status: "Pipeline" },
+            { company: "Indigenous Research and Development Agency (Private) Limited", profit: 6, revenue: 310, status: "Non-Pipeline" },
+            { company: "Islamabad Electric Supply Company Limited", profit: -1416, revenue: 331073, status: "Pipeline" },
+            { company: "Karachi Port Trust", profit: 35306, revenue: 48259, status: "Non-Pipeline" },
+            { company: "Lahore Electric Supply Company Limited", profit: -12715, revenue: 663040, status: "Pipeline" },
+            { company: "Multan Electric Power Company Limited", profit: 5258, revenue: 524062, status: "Pipeline" },
+            { company: "National Bank of Pakistan", profit: 56723, revenue: 216279, status: "Non-Pipeline" },
+            { company: "National Construction Limited", profit: -30, revenue: 79, status: "Non-Pipeline" },
+            { company: "National Engineering Services Pakistan (Private) Limited", profit: 1730, revenue: 14019, status: "Non-Pipeline" },
+            { company: "National Fertilizer Corporation of Pakistan (Private) Limited", profit: 499, revenue: 0, status: "Non-Pipeline" },
+            { company: "National Highway Authority", profit: -294863, revenue: 100250, status: "Non-Pipeline" },
+            { company: "National Insurance Company Limited", profit: -2868, revenue: 13668, status: "Pipeline" },
+            { company: "National Power Parks Management", profit: -46069, revenue: 334351, status: "Non-Pipeline" },
+            { company: "National Security Printing Company (Private) Limited", profit: 2884, revenue: 8896, status: "Non-Pipeline" },
+            { company: "National Telecommunication Corporation", profit: 294, revenue: 5992, status: "Non-Pipeline" },
+            { company: "National Transmission and Despatch Company", profit: 7683, revenue: 74160, status: "Non-Pipeline" },
+            { company: "Neelum Jhelum Hydro Power Company", profit: -29412, revenue: 4707, status: "Non-Pipeline" },
+            { company: "Oil and Gas Development Company Limited", profit: 169903, revenue: 401178, status: "Non-Pipeline" },
+            { company: "Overseas Employment Corporation (Private) Limited", profit: 433, revenue: 825, status: "Non-Pipeline" },
+            { company: "Pak Arab Refinery Company", profit: 22214, revenue: 965108, status: "Non-Pipeline" },
+            { company: "Pak Brunei Investment Company", profit: 1081, revenue: 2917, status: "Non-Pipeline" },
+            { company: "Pak China Investment Company Limited", profit: 2213, revenue: 4436, status: "Non-Pipeline" },
+            { company: "Pak Iran Investment Company", profit: 319, revenue: 1151, status: "Non-Pipeline" },
+            { company: "Pak Kuwait Investment Company (Private) Limited", profit: 24716, revenue: 39211, status: "Non-Pipeline" },
+            { company: "Pak Libya Holding Company (Private) Limited", profit: 1033, revenue: 3853, status: "Non-Pipeline" },
+            { company: "Pak Oman Investment Company", profit: 2379, revenue: 5647, status: "Non-Pipeline" },
+            { company: "Pakistan Agricultural Storage & Services Corporation Limited", profit: -18992, revenue: 61808, status: "Non-Pipeline" },
+            { company: "Pakistan Broadcasting Corporation", profit: -25, revenue: 7851, status: "Non-Pipeline" },
+            { company: "Pakistan Expo Centers (Pvt) Ltd", profit: -218, revenue: 563, status: "Non-Pipeline" },
+            { company: "Pakistan Industrial Development Corporation (Private) Limited", profit: 1824, revenue: 3524, status: "Non-Pipeline" },
+            { company: "Pakistan Infrastructure Development Company Limited", profit: 578, revenue: 652, status: "Non-Pipeline" },
+            { company: "Pakistan International Airlines Corporation Limited", profit: 6844, revenue: 111736, status: "Pipeline" },
+            { company: "Pakistan Mineral Development Corporation (Private) Limited", profit: 2347, revenue: 5271, status: "Pipeline" },
+            { company: "Pakistan National Shipping Corporation", profit: 20449, revenue: 37637, status: "Non-Pipeline" },
+            { company: "Pakistan Petroleum Limited", profit: 89949, revenue: 244977, status: "Non-Pipeline" },
+            { company: "Pakistan Post Office", profit: -19322, revenue: 11033, status: "Non-Pipeline" },
+            { company: "Pakistan Railways", profit: -60317, revenue: 93601, status: "Non-Pipeline" },
+            { company: "Pakistan Reinsurance Company Limited", profit: 2092, revenue: 5571, status: "Pipeline" },
+            { company: "Pakistan Revenue Automation (Private) Limited", profit: 54, revenue: 2388, status: "Non-Pipeline" },
+            { company: "Pakistan State Oil Company Limited", profit: 14242, revenue: 3318784, status: "Non-Pipeline" },
+            { company: "Pakistan Steel Mills Corporation (Private) Limited", profit: -25983, revenue: 207, status: "Non-Pipeline" },
+            { company: "Pakistan Telecommunication Company Limited", profit: -10462, revenue: 168803, status: "Non-Pipeline" },
+            { company: "Pakistan Television Corporation Limited", profit: -639, revenue: 14324, status: "Non-Pipeline" },
+            { company: "Pakistan Tourism Development Corporation", profit: 1, revenue: 0, status: "Non-Pipeline" },
+            { company: "Peshawar Electric Supply Company Limited", profit: -92653, revenue: 291408, status: "Pipeline" },
+            { company: "PIA Holding Company Limited", profit: -48938, revenue: 0, status: "Pipeline" },
+            { company: "Port Qasim Authority", profit: 35110, revenue: 81226, status: "Non-Pipeline" },
+            { company: "Postal Life Insurance Company Limited", profit: 505, revenue: 7422, status: "Non-Pipeline" },
+            { company: "Power Holding (Private) Limited", profit: 339, revenue: 111913, status: "Non-Pipeline" },
+            { company: "Power Planning and Monitoring Company (Private) Limited", profit: 400, revenue: 990, status: "Non-Pipeline" },
+            { company: "Private Power & Infrastructure Board", profit: -474, revenue: 1180, status: "Non-Pipeline" },
+            { company: "Quetta Electric Supply Company Limited", profit: -112744, revenue: 135360, status: "Non-Pipeline" },
+            { company: "Railway Estate Development and Marketing Company", profit: 71, revenue: 178, status: "Non-Pipeline" },
+            { company: "Saindak Metals Limited", profit: 8476, revenue: 13657, status: "Pipeline" },
+            { company: "Saudi Pak Industrial and Agricultural Investment Company Limited", profit: 1147, revenue: 2119, status: "Non-Pipeline" },
+            { company: "State Life Insurance Corporation", profit: 14765, revenue: 553528, status: "Pipeline" },
+            { company: "Sui Northern Gas Pipelines Limited", profit: 14592, revenue: 1408551, status: "Non-Pipeline" },
+            { company: "Sui Southern Gas Company Limited", profit: 7492, revenue: 347950, status: "Non-Pipeline" },
+            { company: "Sukkur Electric Power Company Limited", profit: -25327, revenue: 94915, status: "Pipeline" },
+            { company: "Trading Corporation of Pakistan (Private) Limited", profit: 1348, revenue: 0, status: "Non-Pipeline" },
+            { company: "Tribal Electric Supply Company Limited", profit: 9316, revenue: 72523, status: "Non-Pipeline" },
+            { company: "Utility Stores Corporation (Private) Limited", profit: -4076, revenue: 15456, status: "Non-Pipeline" },
+            { company: "Water and Power Development Authority", profit: 52271, revenue: 114980, status: "Non-Pipeline" },
+            { company: "Zarai Taraqiati Bank Limited", profit: 9651, revenue: 21026, status: "Pipeline" },
         ].map(d => ({
             ...d,
             margin: d.revenue > 0 ? (d.profit / d.revenue) * 100 : 0
@@ -568,10 +559,11 @@
 
             // Responsive dimensions
             const isMobile = window.innerWidth <= 768;
+            const containerWidth = document.getElementById('chartContainer')?.offsetWidth || 1000;
             const margin = isMobile 
                 ? { top: 40, right: 60, bottom: 70, left: 85 }
                 : { top: 60, right: 120, bottom: 80, left: 120 };
-            const width = isMobile ? Math.min(window.innerWidth - 40, 600) : 1000;
+            const width = isMobile ? Math.min(containerWidth - 40, 600) : Math.min(containerWidth - 80, 1000);
             const height = isMobile ? 400 : 600;
             const plotWidth = width - margin.left - margin.right;
             const plotHeight = height - margin.top - margin.bottom;
@@ -700,15 +692,13 @@
             const axisLabelSize = isMobile ? 12 : 15;
             const tickLabelSize = isMobile ? 10 : 12;
 
-            // X-axis ticks
+            // X-axis labels (no tick marks)
             xTicks.forEach(tick => {
-                svg += `<line x1="${xScale(tick)}" y1="${plotHeight}" x2="${xScale(tick)}" y2="${plotHeight + 6}" stroke="#4a5568" stroke-width="2"/>`;
-                svg += `<text x="${xScale(tick)}" y="${plotHeight + 22}" text-anchor="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, true)}</text>`;
+                svg += `<text x="${xScale(tick)}" y="${plotHeight + 20}" text-anchor="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, true)}</text>`;
             });
 
-            // Y-axis ticks
+            // Y-axis labels (no tick marks)
             yTicks.forEach(tick => {
-                svg += `<line x1="-6" y1="${yScale(tick)}" x2="0" y2="${yScale(tick)}" stroke="#4a5568" stroke-width="2"/>`;
                 svg += `<text x="-8" y="${yScale(tick)}" text-anchor="end" dominant-baseline="middle" font-size="${tickLabelSize}" fill="#4a5568" font-family="'Poppins', sans-serif" font-weight="500">${formatNumber(tick, false)}</text>`;
             });
 
@@ -746,11 +736,11 @@
                     </div>
                     <div>
                         <div class="tooltip-item">Revenue:</div>
-                        <div class="tooltip-value">${d.revenue.toLocaleString()}</div>
+                        <div class="tooltip-value">${(d.revenue / 1000000).toFixed(2)} trillion</div>
                     </div>
                     <div>
-                        <div class="tooltip-item">Profit/Loss:</div>
-                        <div class="tooltip-value">${d.profit.toLocaleString()}</div>
+                        <div class="tooltip-item">Net Income:</div>
+                        <div class="tooltip-value">${(d.profit / 1000).toFixed(1)} billion</div>
                     </div>
                     <div>
                         <div class="tooltip-item">Net Margin:</div>
